@@ -61,13 +61,36 @@
 
 <!-- End Navigation Bar -->
 
-<div class="container">
-    <img src="images/cars/toyota/corolla/2017/t4.png" class="img-responsive" style="background-color:powderblue">
+	
+<div class="row">
+	<div class="container col-md-8">
+		<img id="car-image" src="images/cars/toyota/corolla/2017/t4.png" class="img-responsive" style="background-color:powderblue">
+	</div>
+	<div class="container col-md-4">
+		<h3>Exterior</h3>
+		<div class="container col-mid-8">
+			<button id="nr1"  type="button" class="button red"></button>
+			<button id="nr1"  type="button" class="button blue"></button>
+			<button id="nr1"  type="button" class="button white"></button>
+			<button id="nr1"  type="button" class="button green"></button>
+		</div>	
+	</div>
 </div>
-<div class="button-container container">
+
 	
-</div>	
 	
+	
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>	
+<script>
+   $(document).ready(function(){
+      $('.button').on("click", function(){
+		 //get the colour of the button
+		 var color = $( this ).css( "background-color" );
+         //Set the background colour of the car to button colour
+		 $('#car-image').css({'background' : color});
+      });
+   });
+</script>	
 	
 <script>
     var urlParam = function(name, w){
@@ -79,6 +102,9 @@
 
     var selectedCar = {'make':urlParam('make'),'model':urlParam('model'),'year':urlParam('year')};
 </script>
+	
+
+	
 <script src="js/jquery-3.2.0.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 </body>
