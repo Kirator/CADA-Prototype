@@ -15,4 +15,17 @@ body{
 .thumbnail img {
     height:175px;
     width:100%;
+	max-width: 323.33px;
+}
+
+.no-margin{
+	margin: 0;
+}
+
+.no-padding{
+	padding: 0;
+}
+
+.thumbnail{
+	max-width: 327.33px;
 }
