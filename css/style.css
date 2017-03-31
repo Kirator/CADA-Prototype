@@ -1,5 +1,3 @@
-
-
 body{
 /*    background: white url("images/background.png");*/
 	background-color: #fff;
@@ -15,6 +13,7 @@ body{
 .thumbnail img {
     height:175px;
     width:100%;
+
 	max-width: 323.33px;
 }
 
@@ -28,4 +27,11 @@ body{
 
 .thumbnail{
 	max-width: 327.33px;
+
+}
+
+#manufacturers-container {
+    background-color:#fff;
+    padding-top: 10px;
+
 }

@@ -1,0 +1,255 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+
+
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+<!--Top Banner		-->
+<div class="jumbotron">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-3 col-md-4">
+                <a href="#">
+                    <img src="images/cada_logo.jpg" width=500>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Start Navigation Bar -->
+<nav class="navbar navbar-inverse" role="navigation">
+
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">Home</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="index.html">Manufacturers</a></li>
+                <li class="active"><a href="search.html">Search</a></li>
+            </ul>
+            <!-- Link to the Right of Nav Bar -->
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true">&nbsp;</span> Log In</a>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<!-- End Navigation Bar -->
+
+<div class="container">
+    <div class="dropdown" id="make-dropdown">
+        <button class="btn btn-default dropdown-toggle" id="make-select-button" type="button" data-toggle="dropdown">
+            Select Make <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" id="make-dropdown-menu">
+        </ul>
+    </div>
+    <div class="dropdown" id="model-dropdown">
+        <button class="btn btn-default dropdown-toggle" id="model-select-button" type="button" data-toggle="dropdown">Select Model <span class="caret"></span></button>
+        <ul class="dropdown-menu" id="model-dropdown-menu">
+        </ul>
+    </div>
+    <div class="dropdown" id="year-dropdown">
+        <button class="btn btn-default dropdown-toggle" id="year-select-button" type="button" data-toggle="dropdown">Select Year <span class="caret"></span></button>
+        <ul class="dropdown-menu" id="year-dropdown-menu">
+        </ul>
+    </div>
+    <div>
+        <button class="btn btn-default" onClick="openSelectedCar()">Go</button>
+    </div>
+</div>
+
+<script>
+    var selectedCar = {'make':'','model':'','year':''};
+
+    var carDB = {
+        'Toyota': {
+            'Corolla': {'years':[2017,2016,2015]},
+            'Camry': {'years':[2017,2016,2015]},
+            'Avalon': {'years':[2017,2016,2015]},
+        },
+        'Chevrolet': {
+            'Cruze': {'years':[2017,2016,2015]},
+            'Malibu': {'years':[2017,2016,2015]},
+            'Impala': {'years':[2017,2016,2015]},
+        },
+        'Volkswagen': {
+            'Jetta': {'years':[2017,2016,2015]},
+            'Passat': {'years':[2017,2016,2015]},
+            'CC': {'years':[2017,2016,2015]},
+        },
+        'Hyundai': {
+            'Accent': {'years':[2017,2016,2015]},
+            'Elantra': {'years':[2017,2016,2015]},
+            'Sonata': {'years':[2017,2016,2015]},
+        },
+        'Mercedes': {
+            'B': {'years':[2017,2016,2015]},
+            'C': {'years':[2017,2016,2015]},
+            'S': {'years':[2017,2016,2015]},
+        },
+        'Audi': {
+            'A4': {'years':[2017,2016,2015]},
+            'A5': {'years':[2017,2016,2015]},
+            'A6': {'years':[2017,2016,2015]},
+        }
+    };
+
+    String.prototype.capitalizeFirstLetter = function() {
+        return this.charAt(0).toUpperCase() + this.slice(1);
+    };
+
+    function initialize() {
+        clearDropdownMenuByType('make');
+        clearDropdownMenuByType('model');
+        clearDropdownMenuByType('year');
+        var makeDropdownMenu = document.getElementById('make-dropdown-menu');
+
+        var makes = getMakes();
+
+        for (var make in makes) {
+            if (!makes.hasOwnProperty(make)) continue;
+            var name = makes[make].tagName;
+
+            var listItem = document.createElement('li');
+            var aItem = document.createElement('a');
+            aItem.setAttribute('href','#');
+
+            (function(make){
+                aItem.addEventListener('click', function () {
+                    var makeSelectButton = document.getElementById('make-select-button');
+                    makeSelectButton.innerHTML = make + ' <span class="caret"></span>';
+                    selectMake(make);
+                });
+            })(name);
+
+            aItem.appendChild(document.createTextNode(name));
+            listItem.appendChild(aItem);
+            makeDropdownMenu.appendChild(listItem);
+        }
+    }
+
+    function selectMake(make) {
+        clearDropdownMenuByType('model');
+        clearDropdownMenuByType('year');
+        var modelDropdownMenu = document.getElementById('model-dropdown-menu');
+
+        var models = getModels(make);
+
+        for (var model in models) {
+            if (!models.hasOwnProperty(model)) continue;
+            var name = models[model].tagName;
+
+            var listItem = document.createElement('li');
+            var aItem = document.createElement('a');
+            aItem.setAttribute('href', '#');
+
+            (function(model){
+            aItem.addEventListener('click', function () {
+                var modelSelectButton = document.getElementById('model-select-button');
+                modelSelectButton.innerHTML = model + ' <span class="caret"></span>';
+                selectModel(make, model);
+            });
+            })(name);
+
+            aItem.appendChild(document.createTextNode(name));
+            listItem.appendChild(aItem);
+            modelDropdownMenu.appendChild(listItem);
+        }
+    }
+
+    function selectModel(make, model) {
+        clearDropdownMenuByType('year');
+        var modelDropdownMenu = document.getElementById('model-dropdown-menu');
+        var yearDropdownMenu = document.getElementById('year-dropdown-menu');
+
+        var year;
+        var years = getYears(model);
+        for (var i = 0; i < years.length; i++) {
+            year = years[i];
+
+            var listItem = document.createElement('li');
+            var aItem = document.createElement('a');
+            aItem.setAttribute('href','#');
+
+            (function(year){
+                aItem.addEventListener('click', function () {
+                    var yearSelectButton = document.getElementById('year-select-button');
+                    yearSelectButton.innerHTML = year + ' <span class="caret"></span>';
+                    selectCar(make, model, year);
+                });
+            })(year);
+
+            aItem.appendChild(document.createTextNode(year));
+            listItem.appendChild(aItem);
+            yearDropdownMenu.appendChild(listItem);
+        }
+    }
+
+    function selectCar(make, model, year) {
+        selectedCar.make = make;
+        selectedCar.model = model;
+        selectedCar.year = year;
+    }
+
+    function openSelectedCar() {
+        document.location.href = 'car.html?make='+ selectedCar.make +'&model='+ selectedCar.model + '&year='+ selectedCar.year;
+    }
+
+    function clearDropdownMenuByType(type) {
+        var dropDownMenu = document.getElementById(type+'-dropdown-menu');
+        while (dropDownMenu.firstChild) {
+            dropDownMenu.removeChild(dropDownMenu.firstChild);
+        }
+        var selectButton = document.getElementById(type+'-select-button')
+        selectButton.innerHTML = 'Select ' + type.capitalizeFirstLetter() + ' <span class="caret"></span>';
+    }
+
+    function getMakes() {
+        var xmlFile = new XMLHttpRequest();
+        xmlFile.open("GET", "res/db/car-db.xml", false);
+        xmlFile.send();
+        xmlDoc = xmlFile.responseXML;
+        return xmlDoc.querySelectorAll( 'cars > *' );
+    }
+
+    function getModels(make) {
+        var xmlFile = new XMLHttpRequest();
+        xmlFile.open("GET", "res/db/car-db.xml", false);
+        xmlFile.send();
+        xmlDoc = xmlFile.responseXML;
+        return xmlDoc.querySelectorAll( make + ' > *' );
+    }
+
+    initialize();
+</script>
+<script src="js/jquery-3.2.0.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+</body>
+
+</html>
