@@ -60,6 +60,19 @@
 </nav>
 
 <!-- End Navigation Bar -->
+	
+<script>
+	var oldURL = document.referrer;
+		document.write("<ol class=\"breadcrumb\">");
+		document.write("<li class=\"breadcrumb-item active\"><a href=\"carlist.html\">Manufacturer</a></li>");	
+		if(oldURL.includes("carlist.html") ){
+			document.write("<li class=\"breadcrumb-item active\"><a href=\"carlist.html\">Toyota</a></li>")
+		}else if (oldURL.includes("search.html")){
+			document.write("<li class=\"breadcrumb-item active\"><a href=\"search.html\">Search</a></li>");
+		}	
+		
+		document.write("</ol>");	
+</script>	
 
 	
 <div class="row">
