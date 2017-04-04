@@ -190,8 +190,9 @@
 
         var year;
         var years = getYears(model);
-        for (var i = 0; i < years.length; i++) {
-            year = years[i];
+        for (var year in years) {
+            if (!years.hasOwnProperty(year)) continue;
+            var name = years[year].innerHTML;
 
             var listItem = document.createElement('li');
             var aItem = document.createElement('a');
@@ -203,9 +204,9 @@
                     yearSelectButton.innerHTML = year + ' <span class="caret"></span>';
                     selectCar(make, model, year);
                 });
-            })(year);
+            })(name);
 
-            aItem.appendChild(document.createTextNode(year));
+            aItem.appendChild(document.createTextNode(name));
             listItem.appendChild(aItem);
             yearDropdownMenu.appendChild(listItem);
         }
@@ -244,6 +245,14 @@
         xmlFile.send();
         xmlDoc = xmlFile.responseXML;
         return xmlDoc.querySelectorAll( make + ' > *' );
+    }
+
+    function getYears(model) {
+        var xmlFile = new XMLHttpRequest();
+        xmlFile.open("GET", "res/db/car-db.xml", false);
+        xmlFile.send();
+        xmlDoc = xmlFile.responseXML;
+        return xmlDoc.querySelectorAll( model + ' > *' );
     }
 
     initialize();
