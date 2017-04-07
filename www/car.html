@@ -77,7 +77,7 @@
 	
 <div class="row">
 	<div class="container col-md-8">
-		<img id="car-image" src="images/cars/toyota/corolla/2017/t4.png" class="img-responsive" style="background-color:powderblue">
+		<img id="car-image" src="images/cars/toyota/corolla/2017/e4.png" class="img-responsive" style="background-color:powderblue">
 	</div>
 	<div class="container col-md-4">
 		<h3>Exterior</h3>
@@ -86,10 +86,15 @@
 			<button type="button" class="button blue b1"></button>
 			<button type="button" class="button white b1"></button>
 			<button type="button" class="button green b1"></button>
+            <button type="button" class="button orange b1"></button>
 		</div>	
 	</div>
 </div>
-
+<div class="row">
+    <div class="container col-md-12">
+        <hr/>
+    </div>
+</div>
 <div class="row">
 	<div class="container col-md-8">
 		<img id="car-interior-image" src="images/cars/toyota/corolla/2017/i1.png" class="img-responsive" style="background-color:powderblue">
@@ -101,6 +106,7 @@
 			<button type="button" class="button blue b2"></button>
 			<button type="button" class="button white b2"></button>
 			<button type="button" class="button green b2"></button>
+            <button type="button" class="button orange b2"></button>
 		</div>	
 	</div>
 </div>	
@@ -115,12 +121,7 @@
          //Set the background colour of the car to button colour
 		 $('#car-image').css({'background' : color});
       });
-   });
-</script>
-	
-	
-<script>
-   $(document).ready(function(){
+
       $('.b2').on("click", function(){
 		 //get the colour of the button
 		 var color = $( this ).css( "background-color" );
@@ -128,10 +129,45 @@
 		 $('#car-interior-image').css({'background' : color});
       });
    });
-</script>	
-	
-	
+</script>
 <script>
+    var maxIndex = 4;
+    var startIndex = 4;
+    var curIndex = startIndex;
+    var startX = 0;
+    var swipingExteriorCar = false;
+
+    var exteriorCar = document.getElementById("car-image");
+
+    function updateExteriorCarImage () {
+        exteriorCar.setAttribute("src", "images/cars/toyota/corolla/2017/e" + curIndex + ".png");
+    }
+
+    function mouseDown() {
+        startX = event.clientX;
+        swipingExteriorCar = true;
+    }
+
+    function mouseMove() {
+        var curX = event.clientX;
+        var dif = curX - startX;
+        if (swipingExteriorCar && Math.abs(dif) > 20) {
+            curIndex = (curIndex + (-dif / Math.abs(dif))) % (maxIndex + 1);
+            if (curIndex < 0) curIndex = maxIndex;
+            startX = curX;
+            updateExteriorCarImage();
+        }
+    }
+
+    function mouseUp () {
+        swipingExteriorCar = false;
+    }
+
+    function mouseLeave () {
+        swipingExteriorCar = false;
+    }
+
+    /*
     var urlParam = function(name, w){
         w = w || window;
         var rx = new RegExp('[\&|\?]'+name+'=([^\&\#]+)'),
@@ -140,10 +176,15 @@
     }
 
     var selectedCar = {'make':urlParam('make'),'model':urlParam('model'),'year':urlParam('year')};
-</script>
-	
+    */
 
-	
+    exteriorCar.addEventListener("mousedown", mouseDown);
+    exteriorCar.addEventListener("mousemove", mouseMove);
+    exteriorCar.addEventListener("mouseup", mouseUp);
+    exteriorCar.addEventListener("mouseleave", mouseLeave);
+
+    updateExteriorCarImage();
+</script>
 <script src="js/jquery-3.2.0.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 </body>
